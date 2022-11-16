@@ -5,6 +5,11 @@ import { checkPlayerBallCollision, outScreen } from './utils/collisionDetection.
 const canvas = document.getElementById('game')
 const ctx = canvas.getContext('2d')
 
+const btnUp1 = document.getElementById('upBtn1')
+const btnDown1 = document.getElementById('downBtn1')
+const btnUp2 = document.getElementById('upBtn2')
+const btnDown2 = document.getElementById('downBtn2')
+
 const canvasSize = {
   width: canvas.width,
   height: canvas.height,
@@ -33,8 +38,7 @@ const controls = {
   player1: ['KeyW', 'KeyS'],
   player2: ['ArrowUp', 'ArrowDown']
 }
-const pressedKeys = []
-const isGameKey = key => controls.player1.includes(key) || controls.player2.includes(key)
+
 function getDirection(direction) {
   if (direction === 'KeyW' || direction === 'ArrowUp') return 'up'
   else if (direction === 'KeyS' || direction === 'ArrowDown') return 'down'
@@ -101,11 +105,6 @@ function update() {
   drawScene()
   drawScore()
 
-  pressedKeys.forEach(key => {
-    if (controls.player1.includes(key)) player1.setDirection(getDirection(key))
-    else if (controls.player2.includes(key)) player2.setDirection(getDirection(key))
-  })
-
   player1.update()
   player2.update()
   ball.update()
@@ -145,17 +144,38 @@ startGame()
 
 addEventListener('keydown', e => {
   const key = e.code
-  if (isGameKey(key) && !pressedKeys.includes(key)) {
-    pressedKeys.push(key)
+  if (controls.player1.includes(key)) {
+    player1.addDirection(getDirection(key))
+  } else if (controls.player2.includes(key)) {
+    player2.addDirection(getDirection(key))
   }
 })
 
 addEventListener('keyup', e => {
   const key = e.code
-  if (isGameKey(key)) {
-    pressedKeys.splice(pressedKeys.indexOf(key), 1)
-
-    if (controls.player1.includes(key)) player1.velocity = 0
-    else if (controls.player2.includes(key)) player2.velocity = 0
+  if (controls.player1.includes(key)) {
+    player1.removeDirection(getDirection(key))
+  } else if (controls.player2.includes(key)) {
+    player2.removeDirection(getDirection(key))
   }
 })
+
+btnUp1.addEventListener('touchstart', () => player1.addDirection('up'))
+btnDown1.addEventListener('touchstart', () => player1.addDirection('down'))
+btnUp2.addEventListener('touchstart', () => player2.addDirection('up'))
+btnDown2.addEventListener('touchstart', () => player2.addDirection('down'))
+
+btnUp1.addEventListener('touchend', () => player1.removeDirection('up'))
+btnDown1.addEventListener('touchend', () => player1.removeDirection('down'))
+btnUp2.addEventListener('touchend', () => player2.removeDirection('up'))
+btnDown2.addEventListener('touchend', () => player2.removeDirection('down'))
+
+btnUp1.addEventListener('mousedown', () => player1.addDirection('up'))
+btnDown1.addEventListener('mousedown', () => player1.addDirection('down'))
+btnUp2.addEventListener('mousedown', () => player2.addDirection('up'))
+btnDown2.addEventListener('mousedown', () => player2.addDirection('down'))
+
+btnUp1.addEventListener('mouseup', () => player1.removeDirection('up'))
+btnDown1.addEventListener('mouseup', () => player1.removeDirection('down'))
+btnUp2.addEventListener('mouseup', () => player2.removeDirection('up'))
+btnDown2.addEventListener('mouseup', () => player2.removeDirection('down'))

@@ -8,6 +8,7 @@ export default class Player {
     this.width = width
     this.height = height
     this.velocity = 0
+    this.directions = []
   }
 
   draw() {
@@ -35,7 +36,19 @@ export default class Player {
     this.draw()
   }
 
-  setDirection(direction) {
-    this.velocity = direction === 'up' ? -5 : 5
+  getVelocity() {
+    if (this.directions.length === 2 || this.directions.length === 0) this.velocity = 0
+    else if (this.directions.includes('up')) this.velocity = -5
+    else if (this.directions.includes('down')) this.velocity = 5
+  }
+
+  addDirection(direction) {
+    if (!this.directions.includes(direction)) this.directions.push(direction)
+    this.getVelocity()
+  }
+
+  removeDirection(direction) {
+    this.directions = this.directions.filter(dir => dir !== direction)
+    this.getVelocity()
   }
 }
