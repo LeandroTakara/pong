@@ -1,6 +1,7 @@
 import Player from './modules/Player.js'
 import Ball from './modules/Ball.js'
 import { checkPlayerBallCollision, outScreen } from './utils/collisionDetection.js'
+import NUMBERS from './utils/numbers.js'
 
 const canvas = document.getElementById('game')
 const ctx = canvas.getContext('2d')
@@ -17,7 +18,7 @@ const canvasSize = {
   halfHeight: canvas.height / 2
 }
 
-const borderHeight = 10
+const borderHeight = 3
 const gameLimits = {
   top: borderHeight,
   bottom: canvasSize.height - borderHeight,
@@ -92,12 +93,35 @@ function drawScene() {
 
 function drawScore() {
   ctx.save()
-  ctx.fillStyle = 'rgb(255, 255, 255)'
-  ctx.font = '40px Impact'
-  ctx.textBaseline = 'center'
-  ctx.textAlign = 'center'
-  ctx.fillText(p1Score, canvasSize.halfWidth - 100, 100)
-  ctx.fillText(p2Score, canvasSize.halfWidth + 100, 100)
+  ctx.fillStyle = 'white'
+
+  const squareSize = 10
+  const centerDistance = 30
+
+  const p1ScoreNumber = p1Score.toString().split("").map(n => NUMBERS[n]).reverse()
+  const p2ScoreNumber = p2Score.toString().split("").map(n => NUMBERS[n])
+
+  const y = 50
+  p1ScoreNumber.forEach((num, i) => {
+    const x = canvasSize.halfWidth - centerDistance - (i + 1) * (3 * squareSize + 10)
+
+    num.forEach((row, rI) => {
+      row.forEach((element, cI) => {
+        if (element === 1) ctx.fillRect(x + cI * squareSize, y + rI * squareSize, squareSize, squareSize)
+      })
+    })
+  })
+
+  p2ScoreNumber.forEach((num, i) => {
+    const x = canvasSize.halfWidth + centerDistance + (i) * (3 * squareSize + 10)
+
+    num.forEach((row, rI) => {
+      row.forEach((element, cI) => {
+        if (element === 1) ctx.fillRect(x + cI * squareSize, y + rI * squareSize, squareSize, squareSize)
+      })
+    })
+  })
+
   ctx.restore()
 }
 
