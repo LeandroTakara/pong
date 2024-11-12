@@ -3,7 +3,7 @@ A pong clone done with HTML, CSS and Javascript.
 
 **Have fun playing it!**
 
-[Play here](https://devswordfish.github.io/pong)
+[Play here](https://leandrotakara.github.io/pong)
 
 ![game](https://user-images.githubusercontent.com/62572529/203661169-e1315d75-84fb-43e1-9c1d-4e82f7728605.png)
 
